@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 export default function AppBarComponent() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#C39BD3' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -22,13 +22,13 @@ export default function AppBarComponent() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Movie Selection App!
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontFamily: 'Poppins', fontWeight: 600 }}>
+            Movie Review For You!
           </Typography>
-          <Button color="inherit" component={Link} to="/">Landing</Button>
-          <Button color="inherit" component={Link} to="/search">Search</Button>
-          <Button color="inherit" component={Link} to="/review">Review</Button>
-          <Button color="inherit" component={Link} to="/mypage">My Page</Button>
+          <Button id="nav-landing" color="inherit" component={Link} to="/" sx={{ fontFamily: 'Georgia;', fontWeight: 400 }}>Landing</Button>
+          <Button id="nav-search" color="inherit" component={Link} to="/Search" sx={{ fontFamily: 'Georgia;', fontWeight: 400 }}>Search</Button>
+          <Button id="nav-review" color="inherit" component={Link} to="/Review" sx={{ fontFamily: 'Georgia;', fontWeight: 400 }}>Review</Button>
+          <Button id="nav-myPage" color="inherit" component={Link} to="/MyPage" sx={{ fontFamily: 'Georgia;', fontWeight: 400 }}>My Page</Button>
         </Toolbar>
       </AppBar>
     </Box>

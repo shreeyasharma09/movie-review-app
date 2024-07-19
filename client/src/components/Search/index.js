@@ -1,14 +1,14 @@
 import React from 'react';
 import AppBarComponent from '../AppBar';
 
-const Landing = () => {
+const Search = () => {
   return (
     <div>
       <AppBarComponent />
-      <h1>Landing Page</h1>
-      <p>Landing Page.</p>
+      <h1>Search Page</h1>
+      <p>Movie search.</p>
     </div>
   );
 }
 
-export default Landing;
+export default Search;

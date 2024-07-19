@@ -1,14 +1,14 @@
 import React from 'react';
 import AppBarComponent from '../AppBar';
 
-const Landing = () => {
+const MyPage = () => {
   return (
     <div>
       <AppBarComponent />
-      <h1>Landing Page</h1>
-      <p>Landing Page.</p>
+      <h1>My Page</h1>
+      <p>Personal page.</p>
     </div>
   );
 }
 
-export default Landing;
+export default MyPage;

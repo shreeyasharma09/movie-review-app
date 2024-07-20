@@ -1,14 +1,137 @@
-import React from 'react';
+// import React from 'react';
+// import AppBarComponent from '../AppBar';
+
+// const Search = () => {
+//   return (
+//     <div>
+//       <AppBarComponent />
+//       <h1>Search Page</h1>
+//       <p>Movie search.</p>
+//     </div>
+//   );
+// }
+
+// export default Search;
+
+import React, { useState } from 'react';
+import { Box, Typography, Button, Container, TextField, Grid } from '@mui/material';
 import AppBarComponent from '../AppBar';
 
 const Search = () => {
+  const [title, setTitle] = useState('');
+  const [actor, setActor] = useState('');
+  const [director, setDirector] = useState('');
+  const [results, setResults] = useState([]);
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch('/api/searchMovies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title,
+          actor,
+          director
+        })
+      });
+
+      const data = await response.json();
+      setResults(data);
+    } catch (error) {
+      console.error('Error searching movies:', error);
+    }
+  };
+
   return (
-    <div>
+    <Box sx={{ backgroundColor: '#F5EEF8', minHeight: '100vh' }}>
       <AppBarComponent />
-      <h1>Search Page</h1>
-      <p>Movie search.</p>
-    </div>
+      <Container maxWidth="md" sx={{ mt: 8 }}>
+        <Box sx={{ p: 4, borderRadius: 4, boxShadow: 5, backgroundColor: 'white' }}>
+          <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#C39BD3', mb: 4 }}>
+            Search Movie Reviews
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                id="search-title"
+                label="Movie Title"
+                variant="outlined"
+                fullWidth
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                sx={{ fontFamily: 'Georgia', fontWeight: 400 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="search-actor"
+                label="Actor's First & Last Name"
+                variant="outlined"
+                fullWidth
+                value={actor}
+                onChange={(e) => setActor(e.target.value)}
+                sx={{ fontFamily: 'Georgia', fontWeight: 400 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="search-director"
+                label="Director's First & Last Name"
+                variant="outlined"
+                fullWidth
+                value={director}
+                onChange={(e) => setDirector(e.target.value)}
+                sx={{ fontFamily: 'Georgia', fontWeight: 400 }}
+              />
+            </Grid>
+            <Grid item xs={12} style={{ textAlign: 'center' }}>
+              <Button
+                id="search-button"
+                variant="contained"
+                color="primary"
+                onClick={handleSearch}
+                sx={{
+                  backgroundColor: '#C39BD3',
+                  fontFamily: 'Georgia',
+                  fontWeight: 400,
+                  '&:hover': {
+                    backgroundColor: '#AF7AC5'
+                  }
+                }}
+              >
+                Search
+              </Button>
+            </Grid>
+          </Grid>
+          {results.length > 0 && (
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h5" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#C39BD3' }}>
+                Search Results
+              </Typography>
+              {results.map((movie, index) => (
+                <Box key={index} sx={{ mt: 2, p: 2, border: '1px solid #C39BD3', borderRadius: 4 }}>
+                  <Typography variant="h6" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#333' }}>
+                    {movie.title}
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
+                    <strong>Director(s):</strong> {movie.directors}
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
+                    <strong>Average Rating:</strong> {movie.averageRating || 'N/A'}
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
+                    <strong>Reviews:</strong> {movie.reviews.length > 0 ? movie.reviews.join('\n') : 'No reviews'}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
+      </Container>
+    </Box>
   );
-}
+};
 
 export default Search;

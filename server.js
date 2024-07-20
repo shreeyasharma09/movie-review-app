@@ -77,6 +77,46 @@ app.post('/api/getMovies', (req, res) => {
 	connection.end();
   });
 
+  app.post('/api/searchMovies', (req, res) => {
+    let { title, actor, director } = req.body;
+    let connection = mysql.createConnection(config);
+
+    let sql = `
+        SELECT m.title, 
+               GROUP_CONCAT(DISTINCT CONCAT(d.first_name, ' ', d.last_name) SEPARATOR ', ') AS directors,
+               AVG(r.reviewScore) AS averageRating,
+               GROUP_CONCAT(DISTINCT r.reviewContent SEPARATOR '\n') AS reviews
+        FROM movies m
+        LEFT JOIN directors d ON m.id = d.id
+        LEFT JOIN Review r ON m.id = r.movieID
+        LEFT JOIN actors a ON m.id = a.id
+        WHERE 1=1
+    `;
+
+    if (title) {
+        sql += ` AND m.title LIKE '%${title}%'`;
+    }
+    if (actor) {
+        sql += ` AND CONCAT(a.first_name, ' ', a.last_name) LIKE '%${actor}%'`;
+    }
+    if (director) {
+        sql += ` AND CONCAT(d.first_name, ' ', d.last_name) LIKE '%${director}%'`;
+    }
+
+    sql += ' GROUP BY m.id';
+
+    console.log(sql);
+
+    connection.query(sql, (error, results, fields) => {
+        if (error) {
+            console.error('Error searching movies:', error);
+            res.status(500).send('Error searching movies');
+            return;
+        }
+        res.send(results);
+    });
+    connection.end();
+});
 
 
 

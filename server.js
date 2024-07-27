@@ -78,45 +78,58 @@ app.post('/api/getMovies', (req, res) => {
   });
 
   app.post('/api/searchMovies', (req, res) => {
-    let { title, actor, director } = req.body;
-    let connection = mysql.createConnection(config);
+		const { title, actor, director } = req.body;
+		const connection = mysql.createConnection(config);
+	
+	let sqlQuery = `SELECT 
+						name, 
+						CONCAT(directors.first_name, ' ', directors.last_name) AS directors,
+						IFNULL(AVG(Review.reviewScore), 'N/A') AS averageScore,
+						GROUP_CONCAT(DISTINCT reviewContent SEPARATOR ', ') AS reviews
+					FROM 
+						movies
+					LEFT JOIN 
+						movies_directors ON movies.id = movies_directors.movie_id
+					LEFT JOIN 
+						directors ON movies_directors.director_id = directors.id
+					LEFT JOIN 
+						Review ON movies.id = Review.movieID
+					LEFT JOIN 
+						roles ON movies.id = roles.movie_id
+					LEFT JOIN 
+						actors ON roles.actor_id = actors.id
+					WHERE 
+						1=1`;
+	
+		const queryParams = []
+		if (title) {
+			sqlQuery += ` AND movies.name = ?`;
+			queryParams.push(title)
+		}
+	
+		if (actor) {
+			sqlQuery += ` AND CONCAT(actors.first_name, ' ', actors.last_name) = ?`
+			queryParams.push(actor)
+		}
 
-    let sql = `
-        SELECT m.title, 
-               GROUP_CONCAT(DISTINCT CONCAT(d.first_name, ' ', d.last_name) SEPARATOR ', ') AS directors,
-               AVG(r.reviewScore) AS averageRating,
-               GROUP_CONCAT(DISTINCT r.reviewContent SEPARATOR '\n') AS reviews
-        FROM movies m
-        LEFT JOIN directors d ON m.id = d.id
-        LEFT JOIN Review r ON m.id = r.movieID
-        LEFT JOIN actors a ON m.id = a.id
-        WHERE 1=1
-    `;
-
-    if (title) {
-        sql += ` AND m.title LIKE '%${title}%'`;
-    }
-    if (actor) {
-        sql += ` AND CONCAT(a.first_name, ' ', a.last_name) LIKE '%${actor}%'`;
-    }
-    if (director) {
-        sql += ` AND CONCAT(d.first_name, ' ', d.last_name) LIKE '%${director}%'`;
-    }
-
-    sql += ' GROUP BY m.id';
-
-    console.log(sql);
-
-    connection.query(sql, (error, results, fields) => {
-        if (error) {
-            console.error('Error searching movies:', error);
-            res.status(500).send('Error searching movies');
-            return;
-        }
-        res.send(results);
-    });
-    connection.end();
-});
+		if (director) {
+			sqlQuery += ` AND CONCAT(directors.first_name, ' ', directors.last_name) = ?`;
+			queryParams.push(director)
+		}
+	
+		sqlQuery += ` GROUP BY name, directors;`;
+	
+	    console.log("Final SQL Query: ", sqlQuery);  // Log the final query
+	
+	    connection.query(sqlQuery, queryParams, (error, results) => {
+	        if (error) {
+	            console.error("SQL Error: ", error);  // Log any SQL errors
+	            return res.status(500).send(error);
+	        }
+	        console.log("Query Results: ", results);  // Log the query results
+	        res.send(results);
+	    });
+	});
 
 
 

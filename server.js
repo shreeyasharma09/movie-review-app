@@ -131,6 +131,72 @@ app.post('/api/getMovies', (req, res) => {
 	    });
 	});
 
-
+// getRecentReviews
+app.post('/api/getRecentReviews', (req, res) => {
+	let connection = mysql.createConnection(config);
+  
+	let sql = `
+	  SELECT 
+		Review.reviewTitle, 
+		Review.reviewContent, 
+		Review.reviewScore, 
+		movies.name AS movieTitle 
+	  FROM 
+		Review 
+	  JOIN 
+		movies ON Review.movieID = movies.id 
+	  ORDER BY 
+		Review.reviewID DESC 
+	  LIMIT 10
+	`;
+	console.log(sql);
+  
+	connection.query(sql, (error, results) => {
+	  if (error) {
+		console.error('Error fetching reviews:', error);
+		res.status(500).send('Error fetching reviews');
+		return;
+	  }
+	  res.send(results);
+	});
+  
+	connection.end();
+  });
+  
+// getMoviePoster API
+app.post('/api/getMoviePoster', (req, res) => {
+	let connection = mysql.createConnection(config);
+	const { movieID } = req.body;
+  
+	const movieList = [
+	  '12 Angry Men',
+	  '2001: A Space Odyssey',
+	  '3 Ninjas: High Noon at Mega Mountain',
+	  'Alien',
+	  'Aliens',
+	  'All About Eve',
+	  'All Quiet on the Western Front',
+	  'Amadeus',
+	  'American Beauty',
+	  'American History X',
+	  'American Ninja V'
+	];
+  
+	let sql = 'SELECT poster_url FROM movies WHERE id = ? AND name IN (?)';
+	connection.query(sql, [movieID, movieList], (error, results) => {
+	  if (error) {
+		console.error('Error fetching movie poster:', error);
+		res.status(500).send('Error fetching movie poster');
+		return;
+	  }
+	  if (results.length > 0) {
+		res.send({ posterUrl: results[0].poster_url });
+	  } else {
+		res.status(404).send('Movie not found');
+	  }
+	});
+	connection.end();
+  });
+  
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

@@ -1,19 +1,5 @@
-// import React from 'react';
-// import AppBarComponent from '../AppBar';
-
-// const Search = () => {
-//   return (
-//     <div>
-//       <AppBarComponent />
-//       <h1>Search Page</h1>
-//       <p>Movie search.</p>
-//     </div>
-//   );
-// }
-
-// export default Search;
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, Container, TextField, Grid } from '@mui/material';
 import AppBarComponent from '../AppBar';
 
@@ -23,6 +9,7 @@ const Search = () => {
   const [director, setDirector] = useState('');
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     if (!title && !actor && !director) {

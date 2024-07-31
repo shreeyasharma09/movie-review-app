@@ -266,6 +266,13 @@ const MyPage = () => {
         )}
         {showPosters && (
           <Box sx={{ mt: 4 }}>
+            <Box sx={{ ml: 2, mr: 2, mt: 2, mb: 2, border: '0.5px solid #C39BD3', borderRadius: 4, backgroundColor: 'white', p: 1 }}>
+              <Typography sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#C39BD3' }}>
+                <h2>Click the Dropdown to Select a Movie to see its poster, and write some comments on!</h2>
+                <h3>Please select from the following movies for demonstration purposes:</h3>
+                <p>12 Angry Men, 2001: A Space Odyssey, 3 Ninjas: High Noon at Mega Mountain, Alien, Aliens, All About Eve, All Quiet on the Western Front, Amadeus, American Beauty, American History X, American Ninja V</p>
+              </Typography>
+            </Box>
             <FormControl fullWidth>
               <InputLabel>Select a Movie</InputLabel>
               <Select value={selectedMovie} onChange={handleMovieSelect}>

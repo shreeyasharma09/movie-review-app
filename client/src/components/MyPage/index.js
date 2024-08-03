@@ -170,7 +170,6 @@ const MyPage = () => {
         body: JSON.stringify({ movieID: selectedMovie, comment })
       });
       
-      // Fetch the updated comments for the selected movie
       const response = await fetch('/api/getComments', {
         method: 'POST',
         headers: {
@@ -180,7 +179,7 @@ const MyPage = () => {
       });
       const data = await response.json();
       setComments(data);
-      setComment(''); // Clear the input field after saving the comment
+      setComment(''); 
     } catch (error) {
       console.error('Error saving comment:', error);
     }

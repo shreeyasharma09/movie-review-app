@@ -129,8 +129,6 @@ app.post('/api/searchMovies', (req, res) => {
 });
 
 
-
-// getRecentReviews
 app.post('/api/getRecentReviews', (req, res) => {
 	let connection = mysql.createConnection(config);
 
@@ -197,53 +195,52 @@ app.post('/api/getMoviePoster', (req, res) => {
 	connection.end();
 });
 
-// Endpoint to save comments
 app.post('/api/saveComment', (req, res) => {
-	let connection = mysql.createConnection(config);
-	const { movieID, comment } = req.body;
+    let connection = mysql.createConnection(config);
+    const { movieID, comment } = req.body;
 
-	let sql = 'INSERT INTO comments (movieID, comment) VALUES (?, ?)';
-	connection.query(sql, [movieID, comment], (error, results) => {
-		if (error) {
-			console.error('Error saving comment:', error);
-			res.status(500).send('Error saving comment');
-			return;
-		}
-		res.status(200).send('Comment saved successfully');
-	});
-	connection.end();
+    let sql = 'INSERT INTO comments (movieID, comment) VALUES (?, ?)';
+    connection.query(sql, [movieID, comment], (error, results) => {
+        if (error) {
+            console.error('Error saving comment:', error);
+            res.status(500).send('Error saving comment');
+            return;
+        }
+        res.status(200).send('Comment saved successfully');
+    });
+    connection.end();
 });
 
 app.post('/api/getComments', (req, res) => {
-	let connection = mysql.createConnection(config);
-	const { movieID } = req.body;
+    let connection = mysql.createConnection(config);
+    const { movieID } = req.body;
 
-	let sql = 'SELECT comment FROM comments WHERE movieID = ?';
-	connection.query(sql, [movieID], (error, results) => {
-		if (error) {
-			console.error('Error fetching comments:', error);
-			res.status(500).send('Error fetching comments');
-			return;
-		}
-		res.send(results);
-	});
-	connection.end();
+    let sql = 'SELECT comment FROM comments WHERE movieID = ?';
+    connection.query(sql, [movieID], (error, results) => {
+        if (error) {
+            console.error('Error fetching comments:', error);
+            res.status(500).send('Error fetching comments');
+            return;
+        }
+        res.send(results);
+    });
+    connection.end();
 });
 
-// Endpoint to get all comments
-app.post('/api/getAllComments', (req, res) => {
-	let connection = mysql.createConnection(config);
 
-	let sql = 'SELECT c.comment, m.name AS movieTitle FROM comments c JOIN movies m ON c.movieID = m.id';
-	connection.query(sql, (error, results) => {
-		if (error) {
-			console.error('Error fetching comments:', error);
-			res.status(500).send('Error fetching comments');
-			return;
-		}
-		res.send(results);
-	});
-	connection.end();
+app.post('/api/getAllComments', (req, res) => {
+    let connection = mysql.createConnection(config);
+
+    let sql = 'SELECT c.comment, m.name AS movieTitle FROM comments c JOIN movies m ON c.movieID = m.id';
+    connection.query(sql, (error, results) => {
+        if (error) {
+            console.error('Error fetching comments:', error);
+            res.status(500).send('Error fetching comments');
+            return;
+        }
+        res.send(results);
+    });
+    connection.end();
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

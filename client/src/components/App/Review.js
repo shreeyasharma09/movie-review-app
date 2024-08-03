@@ -175,7 +175,7 @@ const Review = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} style={{ textAlign: 'center', marginTop: '16px' }}>
-              <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }} style={{ marginBottom: '15px' }}>
+              <Typography variant="body1" sx={{ mb: '2px', fontFamily: 'Georgia', fontWeight: 400, color: '#333' }} style={{ marginBottom: '6px' }}>
                 Please hit this 'Submit' button after filling out all fields:
               </Typography>
               <Button
@@ -196,7 +196,7 @@ const Review = () => {
               </Button>
             </Grid>
             {filled && (
-              <Grid item xs={12} style={{ textAlign: 'center', marginTop: '16px' }}>
+              <Grid item xs={12} style={{ textAlign: 'center', marginTop: '2px' }}>
                 <Typography id='confirmation-message' variant='h5' sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#C39BD3' }}>
                   Your review has been received
                 </Typography>
@@ -209,7 +209,7 @@ const Review = () => {
                 <Typography variant='body1' sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
                   Review: {enteredReview}
                 </Typography>
-                <Typography variant='body1' sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }} style={{ marginBottom: '20px' }}>
+                <Typography variant='body1' sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }} style={{ marginBottom: '10px' }}>
                   Rating: {selectedRating}
                 </Typography>
               </Grid>

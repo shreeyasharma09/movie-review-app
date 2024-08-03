@@ -21,8 +21,11 @@ const Landing = () => {
           <Typography variant="h3" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#C39BD3', mb: 4 }}>
             Welcome to Movie Review For You!
           </Typography>
-          <Typography variant="h6" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333', mb: 4 }}>
+          <Typography variant="h5" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333', mb: 4 }}>
             This site is for all your favorite movies!
+          </Typography>
+          <Typography variant="h6" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333', mb: 4 }}>
+            Look at posters, write comments and reviews, & more!
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button

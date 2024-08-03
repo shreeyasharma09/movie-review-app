@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, Container, TextField, Grid } from '@mui/material';
+import { Box, Typography, Button, Container, TextField, Grid, Alert } from '@mui/material';
 import AppBarComponent from '../AppBar';
 
 const Search = () => {
@@ -17,6 +17,7 @@ const Search = () => {
       return;
     }
 
+    setOpen(false);
     try {
       const response = await fetch('/api/searchMovies', {
         method: 'POST',
@@ -57,7 +58,7 @@ const Search = () => {
             <Grid item xs={12}>
               <TextField
                 id="search-actor"
-                label="Actor's First & Last Name"
+                label="Actor's Name (First & Last)"
                 variant="outlined"
                 fullWidth
                 value={actor}
@@ -68,7 +69,7 @@ const Search = () => {
             <Grid item xs={12}>
               <TextField
                 id="search-director"
-                label="Director's First & Last Name"
+                label="Director's Name (First & Last)"
                 variant="outlined"
                 fullWidth
                 value={director}
@@ -95,31 +96,36 @@ const Search = () => {
               </Button>
             </Grid>
           </Grid>
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="h5" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#C39BD3' }}>
-                Search Results
-              </Typography>
-              {results.map((movie, index) => (
-                <Box key={index} sx={{ mt: 2, p: 2, border: '1px solid #C39BD3', borderRadius: 4 }}>
-                  <Typography variant="h6" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#333' }}>
-                    {movie.name}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
-                    <strong>Movie Director(s):</strong> {movie.directors}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
-                    <strong>Average Rating:</strong> {movie.averageScore || 'N/A'}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
-                    <strong>Movie Reviews:</strong> {movie.reviews ? movie.reviews.split('\n').map((review, i) => (
-                      <Typography key={i} variant="body2" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333', display: 'block' }}>
-                        {review}
-                      </Typography>
-                    )) : 'No reviews'}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
+          {open && (
+            <Alert severity="error" sx={{ mt: 4 }}>
+              Please fill in at least one out of the three fields to search.
+            </Alert>
+          )}
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#C39BD3' }}>
+              Search Results
+            </Typography>
+            {results.map((movie, index) => (
+              <Box key={index} sx={{ mt: 2, p: 2, border: '1px solid #C39BD3', borderRadius: 4 }}>
+                <Typography variant="h6" sx={{ fontFamily: 'Georgia', fontWeight: 600, color: '#333' }}>
+                  {movie.name}
+                </Typography>
+                <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
+                  <strong>Movie Director(s):</strong> {movie.directors}
+                </Typography>
+                <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
+                  <strong>Average Rating:</strong> {movie.averageScore || 'N/A'}
+                </Typography>
+                <Typography variant="body1" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333' }}>
+                  <strong>Movie Reviews:</strong> {movie.reviews ? movie.reviews.split('\n').map((review, i) => (
+                    <Typography key={i} variant="body2" sx={{ fontFamily: 'Georgia', fontWeight: 400, color: '#333', display: 'block' }}>
+                      {review}
+                    </Typography>
+                  )) : 'No reviews'}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Container>
     </Box>

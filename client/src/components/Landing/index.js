@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, Container } from '@mui/material';
 import AppBarComponent from '../AppBar';
 
 const Landing = () => {
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ backgroundColor: '#EBDEF0', minHeight: '100vh' }}>
       <AppBarComponent />
@@ -26,8 +28,7 @@ const Landing = () => {
             <Button
               variant="contained"
               color="primary"
-              component={Link}
-              to="/search"
+              onClick={() => navigate('/search')}
               sx={{
                 backgroundColor: '#C39BD3',
                 fontFamily: 'Georgia',
@@ -42,8 +43,7 @@ const Landing = () => {
             <Button
               variant="contained"
               color="primary"
-              component={Link}
-              to="/review"
+              onClick={() => navigate('/review')}
               sx={{
                 backgroundColor: '#C39BD3',
                 fontFamily: 'Georgia',
@@ -58,8 +58,7 @@ const Landing = () => {
             <Button
               variant="contained"
               color="primary"
-              component={Link}
-              to="/mypage"
+              onClick={() => navigate('/mypage')}
               sx={{
                 backgroundColor: '#C39BD3',
                 fontFamily: 'Georgia',

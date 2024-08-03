@@ -1,13 +1,3 @@
-// import React from 'react';
-// import Review from './Review';
-
-// function App() {
-//   return <Review />;
-
-// }
-
-// export default App;
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from '../Landing';
